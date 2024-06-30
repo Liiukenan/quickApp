@@ -1,0 +1,85 @@
+<template>
+  <!-- template里只能有一个根节点 -->
+  <div class="wrapper">
+    <swiper class="swiper" indicator="true" autoplay="true" interval="5000">
+      <image
+        for="{{slides}}"
+        class="swiper-image"
+        src="{{$item.image}}"
+      ></image>
+    </swiper>
+    <div class="grid">
+      <div class="grid-item" for="{{categories}}">
+        <image src="{{$item.icon}}"></image>
+        <text>{{ $item.name }}</text>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import fetch from '@system.fetch'
+export default {
+  data: {
+    slides: [],
+    categories: []
+  },
+  onInit() {
+    fetch.fetch({
+      url: "https://locally-server-zce.vercel.app/slides",
+      success: (res) => {
+        const data = JSON.parse(res.data)
+        this.slides = data
+        console.log(data)
+      }
+    })
+    fetch.fetch({
+      url: "https://locally-server-zce.vercel.app/categories",
+      success: (res) => {
+        const data = JSON.parse(res.data)
+        console.log(data)
+        this.categories = data
+
+      }
+    })
+  },
+}
+</script>
+
+<style lang="less">
+.wrapper {
+  flex-direction: column;
+  .swiper {
+    height: 380px;
+    indicator-color: #7fffd4;
+    indicator-size: 15px;
+  }
+  .grid {
+    flex-wrap: wrap;
+    border-top: 1px;
+    border-top-color: #e9ecef;
+    border-right: 1px;
+    border-right-color: #e9ecef;
+    .grid-item {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 249px;
+      height: 249px;
+      border-left-width: 1px;
+      border-left-color: #e9ecef;
+      border-bottom-width: 1px;
+      border-bottom-color: #e9ecef;
+    }
+  }
+  .grid-item image {
+    height: 70px;
+    height: 70px;
+  }
+  .grid-item text {
+    margin-top: 20px;
+    font-size: 28px;
+    color: #868396;
+  }
+}
+</style>
